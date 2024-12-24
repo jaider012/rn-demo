@@ -6,7 +6,7 @@ import {NavigationMenu} from '../organisms/NavigationMenu';
 
 interface DashboardTemplateProps {
   role: string;
-  onNavigate: (screen: string) => void;
+  onNavigate: (screen: 'Dashboard' | 'Login' | 'Profile' | 'Settings') => void;
 }
 
 export const DashboardTemplate: React.FC<DashboardTemplateProps> = ({

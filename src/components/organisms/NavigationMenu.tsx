@@ -4,7 +4,7 @@ import {Card} from '../molecules/Card';
 
 interface NavigationMenuProps {
   role: string;
-  onNavigate: (screen: string) => void;
+  onNavigate: (screen: 'Dashboard' | 'Login' | 'Profile' | 'Settings') => void;
 }
 
 export const NavigationMenu: React.FC<NavigationMenuProps> = ({

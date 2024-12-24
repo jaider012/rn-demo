@@ -3,31 +3,50 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector} from 'react-redux';
+
+import {
+  LoginScreen,
+  DashboardScreen,
+  ProfileScreen,
+  SettingsScreen,
+} from '../screens';
 import {RootState} from '../redux/store';
-import {Dashboard, Profile, Settings} from '../screens';
 
 const Stack = createStackNavigator();
 
-const AppNavigator = () => {
-  const {user} = useSelector((state: RootState) => state.auth);
-  const role = user?.role || 'guest';
-
-  const canAccessProfile = role === 'member1' || role === 'member2';
-  const canAccessDashboard = role === 'member1' || role === 'guest';
+export const AppNavigator = () => {
+  const {user, token} = useSelector((state: RootState) => state.auth);
+  const role = user?.role ?? 'guest';
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {canAccessDashboard && (
-          <Stack.Screen name="Dashboard" component={Dashboard} />
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        {!token ? (
+          <Stack.Screen name="Login" component={LoginScreen} />
+        ) : (
+          <>
+            {role === 'member1' && (
+              <>
+                <Stack.Screen name="Dashboard" component={DashboardScreen} />
+                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+              </>
+            )}
+            {role === 'member2' && (
+              <>
+                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+              </>
+            )}
+            {role === 'guest' && (
+              <>
+                <Stack.Screen name="Dashboard" component={DashboardScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+              </>
+            )}
+          </>
         )}
-        {canAccessProfile && (
-          <Stack.Screen name="Profile" component={Profile} />
-        )}
-        <Stack.Screen name="Settings" component={Settings} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
-export default AppNavigator;
