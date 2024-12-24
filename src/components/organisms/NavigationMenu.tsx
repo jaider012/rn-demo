@@ -1,44 +1,47 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Card} from '../molecules/Card';
+import {useScreenAccess} from '../../hooks/useScreenAccess';
 
 interface NavigationMenuProps {
   role: string;
   onNavigate: (screen: 'Dashboard' | 'Login' | 'Profile' | 'Settings') => void;
 }
-
-export const NavigationMenu: React.FC<NavigationMenuProps> = ({
-  role,
-  onNavigate,
-}) => {
-  const canAccessProfile = ['member1', 'member2'].includes(role);
-  const canAccessDashboard = ['member1', 'guest'].includes(role);
+export const NavigationMenu: React.FC<NavigationMenuProps> = ({onNavigate}) => {
+  // Use the custom hook to get the hasAccess function
+  const {hasAccess} = useScreenAccess();
 
   return (
     <View style={styles.container}>
-      {canAccessDashboard && (
+      {/* Example of conditional rendering based on permissions */}
+      {hasAccess('Dashboard') && (
         <Card
           title="📊 Dashboard"
           description="View your dashboard and detailed analytics"
           onPress={() => onNavigate('Dashboard')}
         />
       )}
-      {canAccessProfile && (
+
+      {/* Each menu item checks permissions before rendering */}
+      {hasAccess('Profile') && (
         <Card
           title="👤 Profile"
           description="Manage your personal information and preferences"
           onPress={() => onNavigate('Profile')}
         />
       )}
-      <Card
-        title="⚙️ Settings"
-        description="Customize your app experience"
-        onPress={() => onNavigate('Settings')}
-      />
+
+      {/* Settings menu item */}
+      {hasAccess('Settings') && (
+        <Card
+          title="⚙️ Settings"
+          description="Customize your app experience"
+          onPress={() => onNavigate('Settings')}
+        />
+      )}
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     padding: 16,
