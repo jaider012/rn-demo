@@ -8,7 +8,9 @@ import {NavigationProps} from '../types/navigation';
 export const DashboardScreen = ({navigation}: NavigationProps<'Dashboard'>) => {
   const {user} = useSelector((state: RootState) => state.auth);
 
-  const handleNavigate = (screen: 'Dashboard' | 'Login' | 'Profile' | 'Settings') => {
+  const handleNavigate = (
+    screen: 'Dashboard' | 'Login' | 'Profile' | 'Settings' | 'Home',
+  ) => {
     navigation.navigate(screen);
   };
 

@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Dashboard: undefined;
   Profile: undefined;
   Settings: undefined;
+  Home: undefined;
 };
 
 export type NavigationProps<T extends keyof RootStackParamList> = {

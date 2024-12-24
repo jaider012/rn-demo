@@ -1,24 +1,24 @@
-// src/components/templates/DashboardTemplate.tsx
+// src/components/templates/HomeTemplate.tsx
 import React from 'react';
 import {View, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import {Text} from '../atoms/Text';
 import {NavigationMenu} from '../organisms/NavigationMenu';
 
-interface DashboardTemplateProps {
+interface HomeTemplateProps {
   role: string;
   onNavigate: (
-    screen: 'Dashboard' | 'Login' | 'Profile' | 'Settings' | 'Home',
+    screen: 'Home' | 'Login' | 'Profile' | 'Settings' | 'Dashboard',
   ) => void;
 }
 
-export const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
+export const HomeTemplate: React.FC<HomeTemplateProps> = ({
   role,
   onNavigate,
 }) => (
   <SafeAreaView style={styles.container}>
     <View style={styles.header}>
       <Text variant="h1" style={styles.headerText}>
-        ✨ Dashboard
+        ✨ Home
       </Text>
       <Text variant="caption" style={styles.subtitle}>
         Welcome back!

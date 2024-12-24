@@ -5,7 +5,9 @@ import {useScreenAccess} from '../../hooks/useScreenAccess';
 
 interface NavigationMenuProps {
   role: string;
-  onNavigate: (screen: 'Dashboard' | 'Login' | 'Profile' | 'Settings') => void;
+  onNavigate: (
+    screen: 'Dashboard' | 'Login' | 'Profile' | 'Settings' | 'Home',
+  ) => void;
 }
 export const NavigationMenu: React.FC<NavigationMenuProps> = ({onNavigate}) => {
   // Use the custom hook to get the hasAccess function
