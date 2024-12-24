@@ -11,6 +11,7 @@ import {
   SettingsScreen,
 } from '../screens';
 import {RootState} from '../redux/store';
+import {ROLE_PERMISSIONS, ScreenName} from '../types/permissions';
 
 const Stack = createStackNavigator();
 
@@ -18,31 +19,41 @@ export const AppNavigator = () => {
   const {user, token} = useSelector((state: RootState) => state.auth);
   const role = user?.role ?? 'guest';
 
+  const hasPermission = (screenName: ScreenName) => {
+    return ROLE_PERMISSIONS[role].includes(screenName);
+  };
+
+  const getInitialRouteName = (): ScreenName => {
+    if (!token) {
+      return 'Login' as ScreenName;
+    }
+    const allowedScreens = ROLE_PERMISSIONS[role];
+    return allowedScreens[0]; // First allowed screen as default
+  };
+
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator
+        screenOptions={{headerShown: false}}
+        initialRouteName={getInitialRouteName()}>
         {!token ? (
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              animationTypeForReplace: !token ? 'pop' : 'push',
+            }}
+          />
         ) : (
           <>
-            {role === 'member1' && (
-              <>
-                <Stack.Screen name="Dashboard" component={DashboardScreen} />
-                <Stack.Screen name="Profile" component={ProfileScreen} />
-                <Stack.Screen name="Settings" component={SettingsScreen} />
-              </>
+            {hasPermission('Dashboard') && (
+              <Stack.Screen name="Dashboard" component={DashboardScreen} />
             )}
-            {role === 'member2' && (
-              <>
-                <Stack.Screen name="Profile" component={ProfileScreen} />
-                <Stack.Screen name="Settings" component={SettingsScreen} />
-              </>
+            {hasPermission('Profile') && (
+              <Stack.Screen name="Profile" component={ProfileScreen} />
             )}
-            {role === 'guest' && (
-              <>
-                <Stack.Screen name="Dashboard" component={DashboardScreen} />
-                <Stack.Screen name="Settings" component={SettingsScreen} />
-              </>
+            {hasPermission('Settings') && (
+              <Stack.Screen name="Settings" component={SettingsScreen} />
             )}
           </>
         )}
