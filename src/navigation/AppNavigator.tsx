@@ -9,6 +9,7 @@ import {
   DashboardScreen,
   ProfileScreen,
   SettingsScreen,
+  HomeScreen,
 } from '../screens';
 import {RootState} from '../redux/store';
 import {ROLE_PERMISSIONS, ScreenName} from '../types/permissions';
@@ -46,6 +47,9 @@ export const AppNavigator = () => {
           />
         ) : (
           <>
+            {hasPermission('Home') && (
+              <Stack.Screen name="Home" component={HomeScreen} />
+            )}
             {hasPermission('Dashboard') && (
               <Stack.Screen name="Dashboard" component={DashboardScreen} />
             )}
